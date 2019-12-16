@@ -1,57 +1,93 @@
-/**
- * 
- */
 package com.stockmarket.model;
 
-import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-/**
- * @author Admin
- *
- */
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-@Table(name = "Users")
-public class Users implements Serializable {
+@Table(name="user")
+public class Users {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4599265314096086983L;
 	@Id
-	private long userId;
-	private String userName;
+	@Column(name="user_id")
+	private String userId;
+	@Column(name="name")
+	private String Name;
+	@Column(name="EmailId")
+	private String emailId;
+	@Column(name="contact_number")
+	private String contactNumber;
+	@Column(name="password")
 	private String password;
-	private String email;
-	private String userType;
-	private String mobile;
-	private boolean isBlocked;
+	@Column(name="confirmed")
+	private boolean confirmed;
+	
+	
+	
+	@JsonIgnore
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "ur_us_id"), inverseJoinColumns = @JoinColumn(name = "ur_ro_id"))
+	private Set<Role> userType = new HashSet<Role>();	
 
+	
 	public Users() {
 	}
 
-	public long getUserId() {
+	public Users(String userId, String Name, String emailId, String contactNumber,
+			String password, Set<Role> userType,boolean confirmed ) {
+		super();
+		this.userId = userId;
+		this.Name = Name;
+		this.emailId = emailId;
+		this.contactNumber = contactNumber;
+		this.password = password;
+		this.userType = userType;
+		this.confirmed = confirmed;
+	
+	}
+
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	@Column(name = "userName", nullable = false)
-	public String getUserName() {
-		return userName;
+	public String getName() {
+		return Name;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setName(String name) {
+		Name = name;
 	}
 
-	@Column(name = "password", nullable = false)
+	public String getEmailId() {
+		return emailId;
+	}
+
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
+
+	public String getContactNumber() {
+		return contactNumber;
+	}
+
+	public void setContactNumber(String contactNumber) {
+		this.contactNumber = contactNumber;
+	}
+
 	public String getPassword() {
 		return password;
 	}
@@ -60,39 +96,32 @@ public class Users implements Serializable {
 		this.password = password;
 	}
 
-	@Column(name = "email", nullable = false)
-	public String getEmail() {
-		return email;
+	public boolean isConfirmed() {
+		return confirmed;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setConfirmed(boolean confirmed) {
+		this.confirmed = confirmed;
 	}
 
-	@Column(name = "userType", nullable = false)
-	public String getUserType() {
+	public Set<Role> getUserType() {
 		return userType;
 	}
 
-	public void setUserType(String userType) {
+	public void setUserType(Set<Role> userType) {
 		this.userType = userType;
-	}
-
-	@Column(name = "mobile", nullable = false)
-	public String getMobile() {
-		return mobile;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + (isBlocked ? 1231 : 1237);
-		result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
+		result = prime * result + ((Name == null) ? 0 : Name.hashCode());
+		result = prime * result + (confirmed ? 1231 : 1237);
+		result = prime * result + ((contactNumber == null) ? 0 : contactNumber.hashCode());
+		result = prime * result + ((emailId == null) ? 0 : emailId.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + (int) (userId ^ (userId >>> 32));
-		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
+		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		result = prime * result + ((userType == null) ? 0 : userType.hashCode());
 		return result;
 	}
@@ -106,29 +135,32 @@ public class Users implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Users other = (Users) obj;
-		if (email == null) {
-			if (other.email != null)
+		if (Name == null) {
+			if (other.Name != null)
 				return false;
-		} else if (!email.equals(other.email))
+		} else if (!Name.equals(other.Name))
 			return false;
-		if (isBlocked != other.isBlocked)
+		if (confirmed != other.confirmed)
 			return false;
-		if (mobile == null) {
-			if (other.mobile != null)
+		if (contactNumber == null) {
+			if (other.contactNumber != null)
 				return false;
-		} else if (!mobile.equals(other.mobile))
+		} else if (!contactNumber.equals(other.contactNumber))
+			return false;
+		if (emailId == null) {
+			if (other.emailId != null)
+				return false;
+		} else if (!emailId.equals(other.emailId))
 			return false;
 		if (password == null) {
 			if (other.password != null)
 				return false;
 		} else if (!password.equals(other.password))
 			return false;
-		if (userId != other.userId)
-			return false;
-		if (userName == null) {
-			if (other.userName != null)
+		if (userId == null) {
+			if (other.userId != null)
 				return false;
-		} else if (!userName.equals(other.userName))
+		} else if (!userId.equals(other.userId))
 			return false;
 		if (userType == null) {
 			if (other.userType != null)
@@ -138,23 +170,16 @@ public class Users implements Serializable {
 		return true;
 	}
 
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-
-	@Column(name = "mobile", nullable = true)
-	public boolean getIsBlocked() {
-		return isBlocked;
-	}
-
-	public void setIsBlocked(boolean isBlocked) {
-		this.isBlocked = isBlocked;
-	}
-
 	@Override
 	public String toString() {
-		return "Users [userId=" + userId + ", userName=" + userName + ", password=" + password + ", email=" + email
-				+ ", userType=" + userType + ", mobile=" + mobile + ", isBlocked=" + isBlocked + "]";
+		return "Users [userId=" + userId + ", Name=" + Name + ", emailId=" + emailId + ", contactNumber="
+				+ contactNumber + ", password=" + password + ", confirmed=" + confirmed + ", userType=" + userType
+				+ "]";
 	}
 
+	
+
+
+	
+	
 }

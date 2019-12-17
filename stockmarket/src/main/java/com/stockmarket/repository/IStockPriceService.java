@@ -1,5 +1,5 @@
 package com.stockmarket.repository;
 
-public interface ICompanyRepository {
+public interface IStockPriceService {
 
 }

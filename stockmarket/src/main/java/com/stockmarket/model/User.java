@@ -1,5 +1,5 @@
 package com.stockmarket.model;
 
-public class Role {
+public class User {
 
 }

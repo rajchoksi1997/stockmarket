@@ -1,5 +1,5 @@
 package com.stockmarket.controller;
 
-public class CompanyController {
+public class UserController {
 
 }
